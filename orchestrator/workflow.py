@@ -47,6 +47,13 @@ def _branch_name(issue_number: int) -> str:
     return f"orchestrator/issue-{issue_number}"
 
 
+def parse_issue_number(branch: str | None) -> int | None:
+    match = re.fullmatch(r"orchestrator/issue-([0-9]+)", branch or "")
+    if not match:
+        return None
+    return int(match.group(1))
+
+
 def _worktree_path(issue_number: int) -> Path:
     return config.WORKTREES_DIR / f"issue-{issue_number}"
 

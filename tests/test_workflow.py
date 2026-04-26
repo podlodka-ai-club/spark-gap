@@ -2,7 +2,22 @@ from __future__ import annotations
 
 import unittest
 
-from orchestrator.workflow import _parse_review_verdict
+from orchestrator.workflow import _parse_review_verdict, parse_issue_number
+
+
+class ParseIssueNumberTest(unittest.TestCase):
+    def test_valid_match(self) -> None:
+        self.assertEqual(parse_issue_number("orchestrator/issue-7"), 7)
+
+    def test_wrong_prefix_returns_none(self) -> None:
+        self.assertIsNone(parse_issue_number("feature/issue-7"))
+
+    def test_non_integer_suffix_returns_none(self) -> None:
+        self.assertIsNone(parse_issue_number("orchestrator/issue-seven"))
+
+    def test_none_or_empty_input_returns_none(self) -> None:
+        self.assertIsNone(parse_issue_number(None))
+        self.assertIsNone(parse_issue_number(""))
 
 
 class ParseReviewVerdictTest(unittest.TestCase):
